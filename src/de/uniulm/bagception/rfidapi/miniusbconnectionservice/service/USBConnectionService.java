@@ -47,11 +47,13 @@ public class USBConnectionService extends Service{
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		Log.d("USB","Start command");
 		if (init){
 			//already started
+			Log.d("USB","already started");
 			return 0;
 		}
-
+		Log.d("USB","started");
 		mManager = (UsbManager) getSystemService(Context.USB_SERVICE);
 		mPermissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(
 				ACTION_USB_PERMISSION), 0);
