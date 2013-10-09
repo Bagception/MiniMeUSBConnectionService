@@ -39,7 +39,7 @@ public class USBConnectionService extends Service{
 	private UsbManager mManager;
 
 	
-	private boolean DEBUG = false;
+	private boolean DEBUG = true;
 
 	
 	private static final int PID = 49193;
@@ -83,6 +83,7 @@ public class USBConnectionService extends Service{
 
 	
 	private void scanDevice(){
+		Log.d("USB","Scanning...");
 		HashMap<String, UsbDevice> deviceList = mManager.getDeviceList();
 		Iterator<UsbDevice> deviceIterator = deviceList.values().iterator();
 		while (deviceIterator.hasNext()) {
@@ -90,6 +91,7 @@ public class USBConnectionService extends Service{
 			if (device.getProductId() == PID && device.getVendorId() == VID) {
 				usbStateChanged(true);
 				if (!mManager.hasPermission(device)){
+					Log.d("USB","No Permission.. requesting");
 					mManager.requestPermission(device, mPermissionIntent);
 				}else{
 					Log.d("USB", "PERMISSION");
@@ -103,6 +105,7 @@ public class USBConnectionService extends Service{
 	BroadcastReceiver usbReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			scanDevice();
 			Log.d("USB", "1");
 			String action = intent.getAction();
 			if (DEBUG)
@@ -118,7 +121,9 @@ public class USBConnectionService extends Service{
 							.show();
 				UsbDevice device = intent
 						.getParcelableExtra(UsbManager.EXTRA_DEVICE);
-				mUsbCommunication.setUsbInterface(mManager, device);
+				
+				mUsbCommunication.setUsbInterface(mManager, device);	
+				
 				usbStateChanged(true);
 
 			} else if (UsbManager.ACTION_USB_DEVICE_DETACHED.equals(action)) {
@@ -126,7 +131,7 @@ public class USBConnectionService extends Service{
 				if (DEBUG)
 					Toast.makeText(context, "USB Detached", Toast.LENGTH_SHORT)
 							.show();
-				mUsbCommunication.setUsbInterface(null, null);
+				//mUsbCommunication.setUsbInterface(null, null);//TODO causes nullpointerexception
 				usbStateChanged(false);
 				// getReaderSn(false);
 
