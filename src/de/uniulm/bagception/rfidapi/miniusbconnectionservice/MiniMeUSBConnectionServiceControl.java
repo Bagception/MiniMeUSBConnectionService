@@ -3,6 +3,8 @@ package de.uniulm.bagception.rfidapi.miniusbconnectionservice;
 import de.philipphock.android.lib.services.ServiceUtil;
 import de.philipphock.android.lib.services.observation.ServiceObservationActor;
 import de.philipphock.android.lib.services.observation.ServiceObservationReactor;
+import de.uniulm.bagception.rfidapi.miniusbconnectionservice.service.USBConnectionActor;
+import de.uniulm.bagception.rfidapi.miniusbconnectionservice.service.USBConnectionReactor;
 import de.uniulm.bagception.rfidapi.miniusbconnectionservice.service.USBConnectionService;
 import android.os.Bundle;
 import android.app.Activity;
@@ -14,15 +16,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class MiniMeUSBConnectionServiceControl extends Activity implements ServiceObservationReactor{
+public class MiniMeUSBConnectionServiceControl extends Activity implements ServiceObservationReactor, USBConnectionReactor{
 
 	private boolean serviceOnline = false;
 	private ServiceObservationActor observationActor;
+	private USBConnectionActor usbConnectionActor;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mini_me_usbconnection_service_control);
 		observationActor = new ServiceObservationActor(this,USBConnectionService.SERVICE_NAME);
+		usbConnectionActor = new USBConnectionActor(this);
 	}
 
 	
@@ -32,13 +36,18 @@ public class MiniMeUSBConnectionServiceControl extends Activity implements Servi
 		super.onResume();
 		onServiceStopped(USBConnectionService.SERVICE_NAME);
 		observationActor.register(this);
+		usbConnectionActor.register(this);
 		ServiceUtil.requestStatusForServiceObservable(this, USBConnectionService.SERVICE_NAME);
+		USBConnectionService.sendRescanBroadcast(this);
+		Intent startServiceIntent = new Intent(this,USBConnectionService.class);
+		startService(startServiceIntent);	
 		
 		
 	}
 	@Override
 	protected void onPause() {
 		observationActor.unregister(this);
+		usbConnectionActor.unregister(this);
 		super.onPause();
 	}
 	@Override
@@ -49,7 +58,7 @@ public class MiniMeUSBConnectionServiceControl extends Activity implements Servi
 		return true;
 	}
 
-	
+
 	@Override
 	public void onServiceStarted(String serviceName) {
 		Log.d("REACTOR",serviceName+" started");
@@ -61,12 +70,13 @@ public class MiniMeUSBConnectionServiceControl extends Activity implements Servi
 		startStopBtn.setText("stop service");
 		startStopBtn.setEnabled(true);
 		serviceOnline=true;
+		USBConnectionService.sendRescanBroadcast(this);
+
 	}
 
 	@Override
 	public void onServiceStopped(String serviceName) {
 		
-		Log.d("REACTOR",serviceName+" stopped");
 		TextView status = (TextView) findViewById(R.id.serviceStatus);
 		status.setText("offline");
 		status.setTextColor(Color.RED);
@@ -75,6 +85,10 @@ public class MiniMeUSBConnectionServiceControl extends Activity implements Servi
 		startStopBtn.setText("start service");
 		startStopBtn.setEnabled(true);
 		serviceOnline=false;
+		
+		TextView v = (TextView) findViewById(R.id.usbStatus);
+		v.setText("unknown");
+		v.setTextColor(Color.BLUE);
 	}
 	
 	public void onStartStopService(View v){
@@ -88,7 +102,25 @@ public class MiniMeUSBConnectionServiceControl extends Activity implements Servi
 			Intent startServiceIntent = new Intent(this,USBConnectionService.class);
 			stopService(startServiceIntent);
 		}
-		
 	}
 
+
+
+	@Override
+	public void onUSBConnected() {
+		TextView v = (TextView) findViewById(R.id.usbStatus);
+		v.setText("connected");
+		v.setTextColor(Color.GREEN);
+	}
+
+
+
+	@Override
+	public void onUSBDisconnected() {
+		TextView v = (TextView) findViewById(R.id.usbStatus);
+
+		v.setText("disconnected");
+		v.setTextColor(Color.RED);
+	}
+	
 }

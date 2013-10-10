@@ -38,4 +38,22 @@
         android:layout_marginTop="46dp"
         android:text="Button" />
 
+    <TextView
+        android:id="@+id/TextView01"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="14dp"
+        android:layout_toLeftOf="@+id/serviceStatus"
+        android:text="USB Status" />
+
+    <TextView
+        android:id="@+id/usbStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/TextView01"
+        android:layout_alignBottom="@+id/TextView01"
+        android:layout_alignLeft="@+id/serviceStatus"
+        android:text="unknown" />
+
 </RelativeLayout>

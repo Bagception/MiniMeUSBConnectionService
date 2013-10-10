@@ -11,7 +11,6 @@ import de.uniulm.bagception.rfidapi.UsbCommunication;
 
 
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -65,17 +64,20 @@ public class USBConnectionService extends ObservableService{
 		while (deviceIterator.hasNext()) {
 			UsbDevice device = deviceIterator.next();
 			if (device.getProductId() == PID && device.getVendorId() == VID) {
-				usbStateChanged(true);
 				if (!mManager.hasPermission(device)){
 					Log.d("USB","No Permission.. requesting");
 					mManager.requestPermission(device, mPermissionIntent);
-				}else{
-					Log.d("USB", "PERMISSION");
-					break;
+					//TODO usbStateChanged(true) necessary?
 				}
+					usbStateChanged(true);
+					Log.d("USB", "PERMISSION");
+					return;
+				
 				
 			}
 		}
+		usbStateChanged(false);
+
 	}
 	
 	BroadcastReceiver usbReceiver = new BroadcastReceiver() {
@@ -136,6 +138,12 @@ public class USBConnectionService extends ObservableService{
 	};
 
 	
+	public static void sendRescanBroadcast(Context c){
+		Intent i = new Intent();
+		i.setAction(USB_CONNECTION_BROADCAST_RESCAN);
+		c.sendBroadcast(i);
+	}
+	
 	BroadcastReceiver rescanrecv = new BroadcastReceiver() {
 		
 		@Override
@@ -146,6 +154,16 @@ public class USBConnectionService extends ObservableService{
 	
 	private void usbStateChanged(boolean connected){
 		Log.d("USB","USB Dongle connected: "+connected);
+		String action = null;
+		if (connected){
+			action = USB_CONNECTION_BROADCAST_CONNECTED;
+		}else{
+			action = USB_CONNECTION_BROADCAST_DISCONNECTED;
+		}
+		Intent i = new Intent();
+		i.setAction(action);
+		sendBroadcast(i);
+		
 	}
 	
 
@@ -156,20 +174,27 @@ public class USBConnectionService extends ObservableService{
 		mPermissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(
 				ACTION_USB_PERMISSION), 0);
 		
-		
+		{
 		IntentFilter filter = new IntentFilter();
-		filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED); // will
-																	// intercept
-																	// by system
+		filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);	
 		filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
 		filter.addAction(ACTION_USB_PERMISSION);
 		registerReceiver(usbReceiver, filter);
+		}
+		{
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(USB_CONNECTION_BROADCAST_RESCAN);	
+		registerReceiver(rescanrecv, filter);
+		}
+		
+		
 		
 	}
 
 	@Override
 	public void onDestroy() {
 		unregisterReceiver(usbReceiver);
+		unregisterReceiver(rescanrecv);
 		super.onDestroy();
 	}
 
