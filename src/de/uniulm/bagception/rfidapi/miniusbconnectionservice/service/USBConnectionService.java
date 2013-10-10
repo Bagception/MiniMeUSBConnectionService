@@ -3,6 +3,7 @@ package de.uniulm.bagception.rfidapi.miniusbconnectionservice.service;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import de.philipphock.android.lib.services.observation.ObservableService;
 import de.uniulm.bagception.rfidapi.RFIDMiniMe;
 import de.uniulm.bagception.rfidapi.UsbCommunication;
 
@@ -21,9 +22,7 @@ import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
-public class USBConnectionService extends Service{
-
-	private volatile boolean init=false;
+public class USBConnectionService extends ObservableService{
 	
 	public static final String USB_CONNECTION_BROADCAST = "de.uniulm.bagception.service.broadcast.usbconnection";
 	public static final String USB_CONNECTION_BROADCAST_CONNECTED = "de.uniulm.bagception.service.broadcast.usbconnection.connected";
@@ -35,6 +34,7 @@ public class USBConnectionService extends Service{
 
 	private UsbCommunication mUsbCommunication = UsbCommunication.newInstance();
 
+	public static final String SERVICE_NAME = "de.uniulm.bagception.rfidapi.miniusbconnectionservice.service.USBConnectionService";
 	
 	private UsbManager mManager;
 
@@ -44,33 +44,9 @@ public class USBConnectionService extends Service{
 	
 	private static final int PID = 49193;
 	private static final int VID = 4901;
+
 	
-	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
-		Log.d("USB","Start command");
-		if (init){
-			//already started
-			Log.d("USB","already started");
-			return 0;
-		}
-		Log.d("USB","started");
-		mManager = (UsbManager) getSystemService(Context.USB_SERVICE);
-		mPermissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(
-				ACTION_USB_PERMISSION), 0);
-		
-		
-		IntentFilter filter = new IntentFilter();
-		filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED); // will
-																	// intercept
-																	// by system
-		filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
-		filter.addAction(ACTION_USB_PERMISSION);
-		registerReceiver(usbReceiver, filter);
-		
-		init = true;
-		
-		return super.onStartCommand(intent, flags, startId);
-	}
+
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
@@ -171,5 +147,38 @@ public class USBConnectionService extends Service{
 	private void usbStateChanged(boolean connected){
 		Log.d("USB","USB Dongle connected: "+connected);
 	}
+	
+
+	@Override
+	protected void onFirstInit() {
+
+		mManager = (UsbManager) getSystemService(Context.USB_SERVICE);
+		mPermissionIntent = PendingIntent.getBroadcast(this, 0, new Intent(
+				ACTION_USB_PERMISSION), 0);
+		
+		
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED); // will
+																	// intercept
+																	// by system
+		filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
+		filter.addAction(ACTION_USB_PERMISSION);
+		registerReceiver(usbReceiver, filter);
+		
+	}
+
+	@Override
+	public void onDestroy() {
+		unregisterReceiver(usbReceiver);
+		super.onDestroy();
+	}
+
+	@Override
+	public String getServiceName() {
+		
+		return SERVICE_NAME;
+	}
+
+
 
 }

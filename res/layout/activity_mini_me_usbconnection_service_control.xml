@@ -9,8 +9,33 @@
     tools:context=".MiniMeUSBConnectionServiceControl" >
 
     <TextView
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="43dp"
+        android:layout_marginTop="47dp"
+        android:text="ServiceStatus:" />
+
+    <TextView
+        android:id="@+id/serviceStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView1"
+        android:layout_alignBottom="@+id/textView1"
+        android:layout_marginLeft="25dp"
+        android:layout_toRightOf="@+id/textView1"
+        android:text="unknown" />
+
+    <Button
+        android:id="@+id/startStopService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:onClick="onStartStopService"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="46dp"
+        android:text="Button" />
 
 </RelativeLayout>
