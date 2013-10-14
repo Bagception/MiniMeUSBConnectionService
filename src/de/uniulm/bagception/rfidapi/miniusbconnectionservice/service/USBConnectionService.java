@@ -6,6 +6,7 @@ import java.util.Iterator;
 import de.philipphock.android.lib.services.observation.ObservableService;
 import de.uniulm.bagception.rfidapi.RFIDMiniMe;
 import de.uniulm.bagception.rfidapi.UsbCommunication;
+import de.uniulm.bagception.service.USBConnectionServiceRemote;
 
 
 
@@ -18,6 +19,7 @@ import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
 import android.os.IBinder;
+import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -40,15 +42,22 @@ public class USBConnectionService extends ObservableService{
 	
 	private boolean DEBUG = true;
 
+	private boolean isConnected=false;
 	
 	private static final int PID = 49193;
 	private static final int VID = 4901;
 
-	
+	private final USBConnectionServiceRemote.Stub mBinder = new USBConnectionServiceRemote.Stub() {
+		
+		@Override
+		public boolean isConnected() throws RemoteException {
+			return USBConnectionService.this.isConnected;
+		}
+	};
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		return null;
+		return mBinder;
 	}
 	
 	public void foceRescanUSBState(){
@@ -58,7 +67,6 @@ public class USBConnectionService extends ObservableService{
 
 	
 	private void scanDevice(){
-		Log.d("USB","Scanning...");
 		HashMap<String, UsbDevice> deviceList = mManager.getDeviceList();
 		Iterator<UsbDevice> deviceIterator = deviceList.values().iterator();
 		while (deviceIterator.hasNext()) {
@@ -153,6 +161,7 @@ public class USBConnectionService extends ObservableService{
 	};
 	
 	private void usbStateChanged(boolean connected){
+		isConnected=connected;
 		Log.d("USB","USB Dongle connected: "+connected);
 		String action = null;
 		if (connected){

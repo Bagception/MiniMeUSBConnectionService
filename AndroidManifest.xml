@@ -30,7 +30,19 @@
                 android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
                 android:resource="@xml/device_filter" />
         </activity>
-        <service android:name=".service.USBConnectionService"></service>
+        
+        
+        <service 
+            android:name=".service.USBConnectionService"
+            android:process=":USBConnectionServiceProcess" 
+            >
+             <intent-filter>
+             <action android:name="de.uniulm.bagception.service.USBConnectionServiceRemote" >
+             </action>
+          </intent-filter>
+            
+            
+        </service>
         
     </application>
 
