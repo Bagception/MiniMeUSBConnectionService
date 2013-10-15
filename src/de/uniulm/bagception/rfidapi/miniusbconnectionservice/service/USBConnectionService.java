@@ -162,7 +162,7 @@ public class USBConnectionService extends ObservableService {
 
 		{
 			IntentFilter filter = new IntentFilter();
-			filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
+			//filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
 			filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
 			filter.addAction(ACTION_USB_PERMISSION);
 			registerReceiver(usbReceiver, filter);
@@ -183,7 +183,7 @@ public class USBConnectionService extends ObservableService {
 
 	@Override
 	public void onDestroy() {
-		unregisterReceiver(usbReceiver);
+		//unregisterReceiver(usbReceiver);
 		unregisterReceiver(rescanrecv);
 		unregisterReceiver(doRFIDScan);
 		super.onDestroy();
@@ -195,8 +195,6 @@ public class USBConnectionService extends ObservableService {
 		return SERVICE_NAME;
 	}
 
-	public static void rfidScan() {
 
-	}
 
 }

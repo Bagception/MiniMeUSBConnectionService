@@ -44,13 +44,15 @@ public final class R {
     public static final class layout {
         public static final int activity_dialog=0x7f030000;
         public static final int activity_main=0x7f030001;
-        public static final int activity_service_observable=0x7f030002;
+        public static final int activity_on_connect=0x7f030002;
+        public static final int activity_service_observable=0x7f030003;
     }
     public static final class menu {
         public static final int main=0x7f080000;
         public static final int mini_me_usbconnection_service_control=0x7f080001;
-        public static final int rfidconnection_service_control=0x7f080002;
-        public static final int service_observable=0x7f080003;
+        public static final int on_connect=0x7f080002;
+        public static final int rfidconnection_service_control=0x7f080003;
+        public static final int service_observable=0x7f080004;
     }
     public static final class string {
         public static final int action_settings=0x7f050001;
@@ -58,6 +60,7 @@ public final class R {
         public static final int btn_inventory=0x7f050003;
         public static final int hello_world=0x7f050002;
         public static final int title_activity_mini_me_usbconnection_service_control=0x7f050005;
+        public static final int title_activity_on_connect=0x7f050006;
         public static final int title_activity_service_observable=0x7f050004;
     }
     public static final class style {

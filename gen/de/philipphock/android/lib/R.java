@@ -21,10 +21,10 @@ public final class R {
 	}
 	public static final class layout {
 		public static final int activity_dialog = 0x7f030000;
-		public static final int activity_service_observable = 0x7f030002;
+		public static final int activity_service_observable = 0x7f030003;
 	}
 	public static final class menu {
-		public static final int service_observable = 0x7f080003;
+		public static final int service_observable = 0x7f080004;
 	}
 	public static final class string {
 		public static final int action_settings = 0x7f050001;
