@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import de.philipphock.android.lib.BroadcastActor;
+import de.uniulm.bagception.broadcastconstants.BagceptionBroadcastContants;
 
 /**
  * 
@@ -20,8 +21,8 @@ public class USBConnectionActor extends BroadcastActor<USBConnectionReactor>{
 	@Override
 	public void register(Context context) {
 		IntentFilter filter = new IntentFilter();
-		filter.addAction(USBConnectionService.USB_CONNECTION_BROADCAST_CONNECTED);
-		filter.addAction(USBConnectionService.USB_CONNECTION_BROADCAST_DISCONNECTED);
+		filter.addAction(BagceptionBroadcastContants.USB_CONNECTION_BROADCAST_CONNECTED);
+		filter.addAction(BagceptionBroadcastContants.USB_CONNECTION_BROADCAST_DISCONNECTED);
 		context.registerReceiver(this,filter);
 		
 	}
@@ -29,9 +30,9 @@ public class USBConnectionActor extends BroadcastActor<USBConnectionReactor>{
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		if (USBConnectionService.USB_CONNECTION_BROADCAST_CONNECTED.equals(intent.getAction())){
+		if (BagceptionBroadcastContants.USB_CONNECTION_BROADCAST_CONNECTED.equals(intent.getAction())){
 			reactor.onUSBConnected();
-		} else if (USBConnectionService.USB_CONNECTION_BROADCAST_DISCONNECTED.equals(intent.getAction())){
+		} else if (BagceptionBroadcastContants.USB_CONNECTION_BROADCAST_DISCONNECTED.equals(intent.getAction())){
 			reactor.onUSBDisconnected();
 		}
 	}
