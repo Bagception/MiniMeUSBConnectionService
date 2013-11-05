@@ -1,7 +1,0 @@
-# cache for current jar dependency. DO NOT EDIT.
-# format is <lastModified> <length> <SHA-1> <path>
-# Encoding is UTF-8
-1383586538980 556198 4a6be13368bb64c5a0b0460632d228a1a915f58f X:\workspaces\android\AndroidLibraryPackage\libs\android-support-v4.jar
-1383655319109 556198 4a6be13368bb64c5a0b0460632d228a1a915f58f X:\workspaces\android\MiniMeLibrary\libs\android-support-v4.jar
-1383655221015 556198 4a6be13368bb64c5a0b0460632d228a1a915f58f X:\workspaces\android\MiniMeUSBConnectionService\libs\android-support-v4.jar
-1383586488287 556198 4a6be13368bb64c5a0b0460632d228a1a915f58f X:\workspaces\android\BagceptionBroadcastConstants\libs\android-support-v4.jar
