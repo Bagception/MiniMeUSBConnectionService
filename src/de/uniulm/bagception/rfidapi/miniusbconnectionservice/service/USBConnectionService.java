@@ -3,12 +3,6 @@ package de.uniulm.bagception.rfidapi.miniusbconnectionservice.service;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import de.philipphock.android.lib.services.observation.ObservableService;
-import de.uniulm.bagception.broadcastconstants.BagceptionBroadcastContants;
-import de.uniulm.bagception.rfidapi.RFIDMiniMe;
-import de.uniulm.bagception.rfidapi.UsbCommunication;
-import de.uniulm.bagception.service.USBConnectionServiceRemote;
-
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,7 +13,11 @@ import android.hardware.usb.UsbManager;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
-import android.widget.Toast;
+import de.philipphock.android.lib.services.observation.ObservableService;
+import de.uniulm.bagception.broadcastconstants.BagceptionBroadcastContants;
+import de.uniulm.bagception.rfidapi.RFIDMiniMe;
+import de.uniulm.bagception.rfidapi.UsbCommunication;
+import de.uniulm.bagception.service.USBConnectionServiceRemote;
 
 public class USBConnectionService extends ObservableService {
 

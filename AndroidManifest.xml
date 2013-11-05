@@ -37,7 +37,7 @@
             android:name="de.uniulm.bagception.rfidapi.miniusbconnectionservice.service.USBConnectionService"
             android:process=":USBConnectionServiceProcess" >
             <intent-filter>
-                <action android:name="de.uniulm.bagception.service.USBConnectionServiceRemote" >
+                <action android:name="de.uniulm.bagception.rfidapi.miniusbconnectionservice.service.USBConnectionService" >
                 </action>
 
                 <intent-filter>
