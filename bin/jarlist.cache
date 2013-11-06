@@ -1,7 +1,6 @@
 # cache for current jar dependency. DO NOT EDIT.
 # format is <lastModified> <length> <SHA-1> <path>
 # Encoding is UTF-8
-1381322637000 556198 4a6be13368bb64c5a0b0460632d228a1a915f58f /home/phil/workspace/MiniMeLibrary/libs/android-support-v4.jar
-1381326145000 556198 4a6be13368bb64c5a0b0460632d228a1a915f58f /home/phil/workspace/MiniMeUSBConnectionService/libs/android-support-v4.jar
-1381326655000 556198 4a6be13368bb64c5a0b0460632d228a1a915f58f /home/phil/workspace/AndroidLibraryPackage/libs/android-support-v4.jar
-1381822950000 556198 4a6be13368bb64c5a0b0460632d228a1a915f58f /home/phil/workspace/BagceptionBroadcastConstants/libs/android-support-v4.jar
+1382624212000 556198 4a6be13368bb64c5a0b0460632d228a1a915f58f /home/xaffe/Repo/bagception/AndroidLibraryPackage/libs/android-support-v4.jar
+1382521159000 556198 4a6be13368bb64c5a0b0460632d228a1a915f58f /home/xaffe/Repo/bagception/MiniMeLibrary/libs/android-support-v4.jar
+1382521118000 556198 4a6be13368bb64c5a0b0460632d228a1a915f58f /home/xaffe/Repo/bagception/MiniMeUSBConnectionService/libs/android-support-v4.jar
