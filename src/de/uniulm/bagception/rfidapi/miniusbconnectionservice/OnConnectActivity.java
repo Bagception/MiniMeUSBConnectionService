@@ -2,6 +2,7 @@ package de.uniulm.bagception.rfidapi.miniusbconnectionservice;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.content.Intent;
 import android.view.Menu;
 
 public class OnConnectActivity extends Activity {
@@ -9,7 +10,9 @@ public class OnConnectActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_on_connect);
+		//setContentView(R.layout.activity_on_connect);
+		Intent startApp = new Intent();
+		
 	}
 
 	@Override
