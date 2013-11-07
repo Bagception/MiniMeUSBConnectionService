@@ -13,6 +13,7 @@ import android.hardware.usb.UsbManager;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
+import de.philipphock.android.lib.logging.LOG;
 import de.philipphock.android.lib.services.observation.ObservableService;
 import de.uniulm.bagception.broadcastconstants.BagceptionBroadcastContants;
 import de.uniulm.bagception.rfidapi.RFIDMiniMe;
@@ -160,7 +161,7 @@ public class USBConnectionService extends ObservableService {
 
 		{
 			IntentFilter filter = new IntentFilter();
-			//filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
+			filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
 			filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
 			filter.addAction(ACTION_USB_PERMISSION);
 			registerReceiver(usbReceiver, filter);
