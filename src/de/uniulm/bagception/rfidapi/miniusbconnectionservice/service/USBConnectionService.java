@@ -17,7 +17,7 @@ import de.philipphock.android.lib.services.observation.ObservableService;
 import de.uniulm.bagception.broadcastconstants.BagceptionBroadcastContants;
 import de.uniulm.bagception.rfidapi.RFIDMiniMe;
 import de.uniulm.bagception.rfidapi.UsbCommunication;
-import de.uniulm.bagception.service.USBConnectionServiceRemote;
+
 
 public class USBConnectionService extends ObservableService {
 
@@ -35,7 +35,7 @@ public class USBConnectionService extends ObservableService {
 	private static final int PID = 49193;
 	private static final int VID = 4901;
 
-	private final USBConnectionServiceRemote.Stub mBinder = new USBConnectionServiceRemote.Stub() {
+	private final de.uniulm.bagception.service.USBConnectionService.Stub mBinder = new de.uniulm.bagception.service.USBConnectionService.Stub() {
 
 		@Override
 		public boolean isConnected() throws RemoteException {
