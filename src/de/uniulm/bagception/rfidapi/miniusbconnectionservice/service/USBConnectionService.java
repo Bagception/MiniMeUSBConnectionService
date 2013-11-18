@@ -185,6 +185,7 @@ public class USBConnectionService extends ObservableService {
 		//unregisterReceiver(usbReceiver);
 		unregisterReceiver(rescanrecv);
 		unregisterReceiver(doRFIDScan);
+		unregisterReceiver(usbReceiver);
 		super.onDestroy();
 	}
 
