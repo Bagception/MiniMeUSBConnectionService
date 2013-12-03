@@ -13,6 +13,7 @@ import android.hardware.usb.UsbManager;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
+import android.widget.Toast;
 import de.philipphock.android.lib.services.observation.ObservableService;
 import de.uniulm.bagception.broadcastconstants.BagceptionBroadcastContants;
 import de.uniulm.bagception.rfidapi.RFIDMiniMe;
@@ -189,9 +190,11 @@ public class USBConnectionService extends ObservableService {
 	@Override
 	public void onDestroy() {
 		//unregisterReceiver(usbReceiver);
+		RFIDMiniMe.stopInventory();
 		unregisterReceiver(rescanrecv);
 		unregisterReceiver(RFIDScanRecv);
 		unregisterReceiver(usbReceiver);
+		
 		super.onDestroy();
 	}
 
