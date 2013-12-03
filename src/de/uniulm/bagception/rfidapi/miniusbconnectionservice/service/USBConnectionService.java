@@ -13,7 +13,6 @@ import android.hardware.usb.UsbManager;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
-import de.philipphock.android.lib.logging.LOG;
 import de.philipphock.android.lib.services.observation.ObservableService;
 import de.uniulm.bagception.broadcastconstants.BagceptionBroadcastContants;
 import de.uniulm.bagception.rfidapi.RFIDMiniMe;
@@ -130,14 +129,18 @@ public class USBConnectionService extends ObservableService {
 		}
 	};
 
-	BroadcastReceiver doRFIDScan = new BroadcastReceiver() {
+	BroadcastReceiver RFIDScanRecv = new BroadcastReceiver() {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			RFIDMiniMe.triggerInventory(context);
-		}
+				if (intent.getAction().equals(BagceptionBroadcastContants.BROADCAST_RFID_STARTSCAN)){
+					RFIDMiniMe.triggerInventory(context);	
+				}else if (intent.getAction().equals(BagceptionBroadcastContants.BROADCAST_RFID_STOPSCAN)){
+					RFIDMiniMe.stopInventory();
+				}
+			}
 	};
-
+	
 	private void usbStateChanged(boolean connected) {
 		isConnected = connected;
 		String action = null;
@@ -173,10 +176,13 @@ public class USBConnectionService extends ObservableService {
 		}
 		{
 			IntentFilter filter = new IntentFilter();
-			filter.addAction(BagceptionBroadcastContants.USB_CONNECTION_BROADCAST_RFIDSCAN);
-			registerReceiver(doRFIDScan, filter);
+			filter.addAction(BagceptionBroadcastContants.BROADCAST_RFID_STARTSCAN);
+			filter.addAction(BagceptionBroadcastContants.BROADCAST_RFID_STOPSCAN);
+			registerReceiver(RFIDScanRecv, filter);
 
 		}
+		
+		
 
 	}
 
@@ -184,7 +190,7 @@ public class USBConnectionService extends ObservableService {
 	public void onDestroy() {
 		//unregisterReceiver(usbReceiver);
 		unregisterReceiver(rescanrecv);
-		unregisterReceiver(doRFIDScan);
+		unregisterReceiver(RFIDScanRecv);
 		unregisterReceiver(usbReceiver);
 		super.onDestroy();
 	}
