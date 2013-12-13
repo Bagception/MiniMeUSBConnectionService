@@ -37,22 +37,25 @@
             android:name="de.uniulm.bagception.rfidapi.miniusbconnectionservice.service.USBConnectionService"
             android:process=":USBConnectionServiceProcess" >
             <intent-filter>
-                <action android:name="de.uniulm.bagception.rfidapi.miniusbconnectionservice.service.USBConnectionService" >
-                </action>
-
-                <intent-filter>
-                    <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
-                </intent-filter>
-
-                <meta-data
-                    android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
-                    android:resource="@xml/device_filter" />
+                <action android:name="de.uniulm.bagception.rfidapi.miniusbconnectionservice.service.USBConnectionService" />
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
             </intent-filter>
+            
+            <meta-data
+                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/device_filter" />
         </service>
 
         <activity
             android:name="de.uniulm.bagception.rfidapi.miniusbconnectionservice.OnConnectActivity"
             android:label="@string/title_activity_on_connect" >
+            <intent-filter>
+                <action android:name="de.uniulm.bagception.rfidapi.miniusbconnectionservice.service.USBConnectionService" />
+                <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED"
+                android:resource="@xml/device_filter" />
         </activity>
     </application>
 
