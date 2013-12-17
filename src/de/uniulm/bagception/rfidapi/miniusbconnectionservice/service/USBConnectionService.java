@@ -54,6 +54,8 @@ public class USBConnectionService extends ObservableService {
 	}
 
 	private void scanDevice() {
+		Log.d("USB","scan device now");
+
 		HashMap<String, UsbDevice> deviceList = mManager.getDeviceList();
 		Iterator<UsbDevice> deviceIterator = deviceList.values().iterator();
 		while (deviceIterator.hasNext()) {
@@ -62,14 +64,17 @@ public class USBConnectionService extends ObservableService {
 				if (!mManager.hasPermission(device)) {
 					Log.d("USB", "No Permission.. requesting");
 					mManager.requestPermission(device, mPermissionIntent);
+
 					// TODO usbStateChanged(true) necessary?
 				}
 				usbStateChanged(true);
+				mUsbCommunication.setUsbInterface(mManager, device);
 				RFIDMiniMe.disableBlinking(this);
 				Log.d("USB", "PERMISSION");
 				return;
 
 			}
+			Log.d("USB","permission no");
 		}
 		usbStateChanged(false);
 
