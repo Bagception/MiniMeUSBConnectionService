@@ -186,7 +186,7 @@ public class USBConnectionService extends ObservableService {
 
 		}
 		
-		
+		scanDevice();
 
 	}
 
@@ -194,9 +194,14 @@ public class USBConnectionService extends ObservableService {
 	public void onDestroy() {
 		//unregisterReceiver(usbReceiver);
 		RFIDMiniMe.stopInventory();
-		unregisterReceiver(rescanrecv);
-		unregisterReceiver(RFIDScanRecv);
-		unregisterReceiver(usbReceiver);
+		try{
+			unregisterReceiver(rescanrecv);
+			unregisterReceiver(RFIDScanRecv);
+			unregisterReceiver(usbReceiver);	
+		}catch (IllegalArgumentException e){
+			
+		}
+		
 		
 		super.onDestroy();
 	}
