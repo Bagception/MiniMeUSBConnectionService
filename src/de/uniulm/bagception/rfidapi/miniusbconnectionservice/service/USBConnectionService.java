@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
@@ -64,6 +65,7 @@ public class USBConnectionService extends ObservableService {
 					// TODO usbStateChanged(true) necessary?
 				}
 				usbStateChanged(true);
+				RFIDMiniMe.disableBlinking(this);
 				Log.d("USB", "PERMISSION");
 				return;
 
@@ -93,6 +95,8 @@ public class USBConnectionService extends ObservableService {
 				// mUsbCommunication.setUsbInterface(null, null);//TODO causes
 				// nullpointerexception
 				usbStateChanged(false);
+				
+				
 				// getReaderSn(false);
 
 			} else if (ACTION_USB_PERMISSION.equals(action)) {
@@ -104,9 +108,6 @@ public class USBConnectionService extends ObservableService {
 							UsbManager.EXTRA_PERMISSION_GRANTED, false)) {
 						mUsbCommunication.setUsbInterface(mManager, device);
 						usbStateChanged(true);
-
-						RFIDMiniMe.setPowerLevelTo18();
-						RFIDMiniMe.sleepMode();
 					} else {
 						// finish(); TODO?
 					}
@@ -147,7 +148,10 @@ public class USBConnectionService extends ObservableService {
 		if (connected) {
 			action = BagceptionBroadcastContants.USB_CONNECTION_BROADCAST_CONNECTED;
 		} else {
+			RFIDMiniMe.stopInventory();
+			RFIDMiniMe.sleepMode();
 			action = BagceptionBroadcastContants.USB_CONNECTION_BROADCAST_DISCONNECTED;
+			
 		}
 		Intent i = new Intent();
 		i.setAction(action);
