@@ -10,10 +10,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.hardware.usb.UsbDevice;
 import android.hardware.usb.UsbManager;
-import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.util.Log;
 import de.philipphock.android.lib.services.observation.ObservableService;
 import de.uniulm.bagception.broadcastconstants.BagceptionBroadcastContants;
 import de.uniulm.bagception.rfidapi.RFIDMiniMe;
@@ -54,7 +52,6 @@ public class USBConnectionService extends ObservableService {
 	}
 
 	private void scanDevice() {
-		Log.d("USB","scan device now");
 
 		HashMap<String, UsbDevice> deviceList = mManager.getDeviceList();
 		Iterator<UsbDevice> deviceIterator = deviceList.values().iterator();
@@ -62,7 +59,6 @@ public class USBConnectionService extends ObservableService {
 			UsbDevice device = deviceIterator.next();
 			if (device.getProductId() == PID && device.getVendorId() == VID) {
 				if (!mManager.hasPermission(device)) {
-					Log.d("USB", "No Permission.. requesting");
 					mManager.requestPermission(device, mPermissionIntent);
 
 					// TODO usbStateChanged(true) necessary?
@@ -70,11 +66,9 @@ public class USBConnectionService extends ObservableService {
 				usbStateChanged(true);
 				mUsbCommunication.setUsbInterface(mManager, device);
 				RFIDMiniMe.disableBlinking(this);
-				Log.d("USB", "PERMISSION");
 				return;
 
 			}
-			Log.d("USB","permission no");
 		}
 		usbStateChanged(false);
 
@@ -105,7 +99,6 @@ public class USBConnectionService extends ObservableService {
 				// getReaderSn(false);
 
 			} else if (ACTION_USB_PERMISSION.equals(action)) {
-				Log.d(UsbCommunication.TAG, "permission");
 				synchronized (this) {
 					UsbDevice device = intent
 							.getParcelableExtra(UsbManager.EXTRA_DEVICE);
